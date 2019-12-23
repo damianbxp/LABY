@@ -62,3 +62,9 @@ dkms.conf
 *.opendb
 
 *.db
+
+*.tlog
+
+*.log
+
+Kalkulator/.vs/Kalkulator/v16/.suo
