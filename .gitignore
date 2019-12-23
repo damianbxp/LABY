@@ -50,3 +50,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+*.filters
+
+*.vcxproj
+
+*.user
+
+*.ipch
+
+*.opendb
+
+*.db
