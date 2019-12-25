@@ -6,6 +6,7 @@
 int main()
 {
 	float newData[3] = { 0 };
+	float recivedData[3] = { 0 };
 	struct Stack* Top;
 	Top = (struct Stack*)malloc(sizeof(struct Stack));
 	if (Top==NULL)
@@ -24,16 +25,19 @@ int main()
 	newData[1] = 1;
 	newData[2] = 2;
 
-	PUSH(Top, newData);
+	Top = PUSH(Top, newData);
 
-	Top->data[0] = 10;
-	Top->data[1] = 11;
-	Top->data[2] = 12;
+	newData[0] = 10;
+	newData[1] = 11;
+	newData[2] = 12;
 
+	
 
-	POP(Top);
+	Top = POP(Top, recivedData);
+
+	keyboardInput(newData);
 
 	free(Top);
-	system("pause");
+	//system("pause");
 	return 0;
 }

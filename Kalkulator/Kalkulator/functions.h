@@ -7,7 +7,9 @@ struct Stack
 	struct Stack* previous;
 };
 
-void PUSH(struct Stack*,float*);
+struct Stack* PUSH(struct Stack*,float*);
 
-void POP(struct Stack*);
+struct Stack* POP(struct Stack*,float*);
+
+void keyboardInput(float*);
 #endif // !_F
