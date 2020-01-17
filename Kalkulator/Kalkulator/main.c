@@ -5,8 +5,7 @@
 
 int main()
 {
-	float newData[3] = { 0 };
-	float recivedData[3] = { 0 };
+	float result[2] = { 0 };
 	struct Stack* Top;
 	Top = (struct Stack*)malloc(sizeof(struct Stack));
 	if (Top==NULL)
@@ -16,28 +15,25 @@ int main()
 		exit(-1);
 	}
 
-	Top->data[0] = 0;
-	Top->data[1] = 0;
-	Top->data[2] = 0;
+	Top->data[0] = -1;
+	Top->data[1] = -1;
+	Top->data[2] = -1;
 	Top->previous = NULL;
 	
-	newData[0] = 0;
-	newData[1] = 1;
-	newData[2] = 2;
+	//keyboardInput();
+	Top = generateStack(Top);
+	Top = inverseStack(Top);
+	Top = calculate(Top,result);
 
-	Top = PUSH(Top, newData);
-
-	newData[0] = 10;
-	newData[1] = 11;
-	newData[2] = 12;
-
-	
-
-	Top = POP(Top, recivedData);
-
-	keyboardInput(newData);
+	printf("Wynik: %f", result[0]);
+	if (result[1]>=0)
+	{
+		printf(" + ");
+	}
+	printf("%fi", result[1]);
 
 	free(Top);
+	printf("\n");
 	//system("pause");
 	return 0;
 }

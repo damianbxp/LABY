@@ -3,7 +3,7 @@
 
 struct Stack
 {
-	float data[3];		 //[0][Re][Im]<-liczba		[x][0][0]<- operator w kolejnoœci +-*/
+	float data[3];		 //[0][Re][Im]<-liczba		[x][0][0]<- operator w kolejnoœci +-*/()
 	struct Stack* previous;
 };
 
@@ -11,5 +11,11 @@ struct Stack* PUSH(struct Stack*,float*);
 
 struct Stack* POP(struct Stack*,float*);
 
-void keyboardInput(float*);
+void keyboardInput();
+
+struct Stack* generateStack(struct Stack*);
+
+struct Stack* inverseStack(struct Stack*);
+
+struct Stack* calculate(struct Stack*, float*);
 #endif // !_F
