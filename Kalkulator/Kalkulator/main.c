@@ -20,7 +20,7 @@ int main()
 	Top->data[2] = -1;
 	Top->previous = NULL;
 	
-	//keyboardInput();
+	keyboardInput();
 	Top = generateStack(Top);
 	Top = inverseStack(Top);
 	Top = calculate(Top,result);

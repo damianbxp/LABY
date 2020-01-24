@@ -257,33 +257,33 @@ struct Stack* calculate(struct Stack* Source, float *result)
 
 			switch ((int)data[0])
 			{
-			case 1:
+			case 1://+
 			{
 				argData[1] = arg_a[0] + arg_b[0];
 				argData[2] = arg_a[1] + arg_b[1];
 				TempStack = PUSH(TempStack,argData);
 				break;
 			}
-			case 2:
+			case 2://-
 			{
 				argData[1] = arg_a[0] - arg_b[0];
 				argData[2] = arg_a[1] - arg_b[1];
 				TempStack = PUSH(TempStack, argData);
 				break;
 			}
-			case 3:
+			case 3://*
 			{
 				argData[1] = arg_a[0] * arg_b[0] - arg_a[1] * arg_b[1];
 				argData[2] = arg_a[1] * arg_b[0] + arg_a[0] * arg_b[1];
 				break;
 			}
-			case 4:
+			case 4:// /
 			{
 				argData[1] = arg_a[0] * arg_b[0] + arg_a[1] * arg_b[1];
-				argData[1] /= arg_b[0] * arg_b[0] + arg_b[1] * arg_b[1];
+				argData[1] /= powf(arg_b[0],2) + powf(arg_b[1],2);
 
 				argData[2] = arg_a[1] * arg_b[0] - arg_a[0] * arg_b[1];
-				argData[2] /= arg_b[0] * arg_b[0] + arg_b[1] * arg_b[1];
+				argData[2] /= powf(arg_b[0], 2) + powf(arg_b[1], 2);
 				break;
 			}
 			default:
