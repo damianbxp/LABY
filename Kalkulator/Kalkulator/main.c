@@ -5,6 +5,7 @@
 
 int main()
 {
+	int menu = 0;
 	float result[2] = { 0 };
 	struct Stack* Top;
 	Top = (struct Stack*)malloc(sizeof(struct Stack));
@@ -20,10 +21,26 @@ int main()
 	Top->data[2] = -1;
 	Top->previous = NULL;
 	
-	keyboardInput();
-	Top = generateStack(Top);
-	Top = inverseStack(Top);
-	Top = calculate(Top,result);
+	printf("1.Notacja infliksowa\n2.Odwrotna notacja Polska\n");
+	scanf("%d", &menu);
+	switch (menu)
+	{
+	case 1:
+	{
+		keyboardInput();
+		Top = generateStack(Top);
+		Top = inverseStack(Top);
+		Top = calculate(Top, result);
+	}
+	case 2:
+	{
+
+	}
+	default:
+		break;
+	}
+
+	
 
 	printf("Wynik: %f", result[0]);
 	if (result[1]>=0)

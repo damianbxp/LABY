@@ -18,4 +18,6 @@ struct Stack* generateStack(struct Stack*);
 struct Stack* inverseStack(struct Stack*);
 
 struct Stack* calculate(struct Stack*, float*);
+
+struct Stack* enterStack(struct Stack*);
 #endif // !_F

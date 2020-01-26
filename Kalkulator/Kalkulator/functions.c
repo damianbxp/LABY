@@ -300,3 +300,13 @@ struct Stack* calculate(struct Stack* Source, float *result)
 	free(Source);
 	return TempStack;
 }
+
+struct Stack* enterStack(struct Stack* Source)
+{
+	char enterString[20] = "\0";
+	do
+	{
+		scanf("%s", enterString);
+	} while (1);
+	return Source;
+}
