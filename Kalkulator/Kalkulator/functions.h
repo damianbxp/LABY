@@ -20,4 +20,6 @@ struct Stack* inverseStack(struct Stack*);
 struct Stack* calculate(struct Stack*, float*);
 
 struct Stack* enterStack(struct Stack*);
+
+struct Stack* printStack(struct Stack*);
 #endif // !_F

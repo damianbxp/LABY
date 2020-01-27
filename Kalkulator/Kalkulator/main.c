@@ -31,10 +31,14 @@ int main()
 		Top = generateStack(Top);
 		Top = inverseStack(Top);
 		Top = calculate(Top, result);
+		break;
 	}
 	case 2:
 	{
-
+		Top = enterStack(Top);
+		Top = inverseStack(Top);
+		Top = calculate(Top, result);
+		break;
 	}
 	default:
 		break;
@@ -49,8 +53,9 @@ int main()
 	}
 	printf("%fi", result[1]);
 
+
 	free(Top);
 	printf("\n");
-	//system("pause");
+	system("pause");
 	return 0;
 }

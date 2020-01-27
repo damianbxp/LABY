@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include<math.h>
+#include <math.h>
 #include "functions.h"
 
 #define functionMaxLenght 101
@@ -41,8 +41,9 @@ struct Stack* POP(struct Stack* Top, float *data)
 void keyboardInput() //generuje plik równania
 {
 	char inputTab[functionMaxLenght] = {"\n"};
-	printf("WprowadŸ równanie (czêœæ zespolona powinna byæ w formacie ix):\n");
-	gets_s(inputTab,100);
+	printf("Wprowadz rownanie (czesc zespolona powinna byc w formacie ix):\n");
+
+	scanf("%s", inputTab);
 
 	//generowanie pliku
 	FILE* fp;
@@ -303,10 +304,84 @@ struct Stack* calculate(struct Stack* Source, float *result)
 
 struct Stack* enterStack(struct Stack* Source)
 {
-	char enterString[20] = "\0";
+	char enterString[20] = "\n";
+	float newData[3] = { 0 };
+	int swichNum = -1;
+	printf("Podaj czlon rownania ('=' aby wykonac operacje)\n");
 	do
 	{
+		newData[0] = 0;
+		newData[1] = 0;
+		newData[2] = 0;
 		scanf("%s", enterString);
-	} while (1);
+		swichNum= sscanf(enterString, "%f %f", &newData[1], &newData[2]);
+		if (swichNum==0 || swichNum==-1)
+		{
+			if (enterString[0] == '=')
+			{
+				swichNum = -2;
+				return Source;
+			}
+			else if (enterString[0] == '+')newData[0] = 1;
+			else if (enterString[0] == '-')newData[0] = 2;
+			else if (enterString[0] == '*')newData[0] = 3;
+			else if (enterString[0] == '/')newData[0] = 4;
+		}
+
+		Source = PUSH(Source, newData);
+		system("cls");
+		printf("\nAktualny stos:\n");
+		Source = inverseStack(Source);
+		Source = printStack(Source);
+
+	} while (swichNum!=-2);
 	return Source;
+}
+
+struct Stack* printStack(struct Stack* Source)
+{
+	struct Stack* TempStack;//tymczasowy stos
+	TempStack = (struct Stack*)malloc(sizeof(struct Stack));
+	TempStack->data[0] = -1;
+	TempStack->data[1] = -1;
+	TempStack->data[2] = -1;
+	TempStack->previous = NULL;
+
+	float garbage[3] = { 0 };
+
+	while (Source->previous != NULL)
+	{
+		TempStack = PUSH(TempStack, Source->data);
+		Source = POP(Source, garbage);
+		if (garbage[0]==0)
+		{
+			printf(" %f", garbage[1]);
+			if (garbage[2] >= 0)
+			{
+				printf(" + ");
+			}
+			printf("%fi ", garbage[2]);
+		}
+		else if(garbage[0]==1)
+		{
+			printf("+\n");
+		}
+		else if (garbage[0] == 2)
+		{
+			printf("-\n");
+		}
+		else if (garbage[0] == 3)
+		{
+			printf("*\n");
+		}
+		else if (garbage[0] == 4)
+		{
+			printf("/\n");
+		}
+		
+	}
+	printf("\n\n");
+
+	free(Source);
+	return TempStack;
 }
