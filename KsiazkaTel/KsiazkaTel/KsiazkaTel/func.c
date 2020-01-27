@@ -10,79 +10,30 @@ struct DataCell* loadFromCsv(struct DataCell* TopDataCell)
 	char name[30] = "\0";
 	char surname[30] = "\0";
 	int phoneNumber = 0;
-	int category = 0;
 	char tempRow[100] = "\0";
 	char tempPhoneNumber[20] = "\0";
 	char tempCategory[20] = "\0";
-	int tempCounter = 0;
-	int tempDelta = 0;
 	FILE* fp = fopen("phoneBook.csv", "r");
-	
-	while (fgets(tempRow,100,fp)!=NULL)
+	while (fgets(tempRow, 100, fp) != NULL)
 	{
 		resetString(tempCategory);
 		resetString(name);
 		resetString(surname);
 		resetString(tempPhoneNumber);
-		tempCounter = 0;
-		tempDelta = 0;
-		while (tempRow[tempCounter]!=';')//name
-		{
-			name[tempCounter] = tempRow[tempCounter];
-			tempCounter++;
-		}
-		tempCounter++;
-		tempDelta = tempCounter;
 
-		while (tempRow[tempCounter] != ';')//surname
-		{
-			surname[tempCounter-tempDelta] = tempRow[tempCounter];
-			tempCounter++;
-		}
-		tempCounter++;
-		tempDelta = tempCounter;
-
-		while (tempRow[tempCounter] != ';')//phone number
-		{
-			tempPhoneNumber[tempCounter - tempDelta] = tempRow[tempCounter];
-			tempCounter++;
-		}
-		tempCounter++;
-		tempDelta = tempCounter;
-		while (tempRow[tempCounter] != ';')//category
-		{
-			if (tempRow[tempCounter] == '\n') break;
-			tempCategory[tempCounter - tempDelta] = tempRow[tempCounter];
-			tempCounter++;
-		}
+		sscanf(tempRow, "%[^;];%[^;];%[^;];%s", name, surname, tempPhoneNumber, tempCategory);
 
 		phoneNumber = atoi(tempPhoneNumber);
-		
-		if (0 == strcmp(tempCategory,"rodzina"))
-		{
-			category = 1;
-		}
-		else if (0 == strcmp(tempCategory, "praca"))
-		{
-			category = 2;
-		}
-		else if (0 == strcmp(tempCategory, "znajomi"))
-		{
-			category = 3;
-		}
-		else
-		{
-			category = 0;
-		}
 
-		TopDataCell = addDataCell(TopDataCell, name, surname, phoneNumber, category);
+
+		TopDataCell = addDataCell(TopDataCell, name, surname, phoneNumber, tempCategory);
 	}
 
 	fclose(fp);
 	return TopDataCell;
 }
 
-struct DataCell* addDataCell(struct DataCell* TopDataCell, char *name, char* surname, int phoneNumber, int category)
+struct DataCell* addDataCell(struct DataCell* TopDataCell, char *name, char* surname, int phoneNumber, char* category)
 {
 	struct DataCell* New;
 	New = (struct Data*)malloc(sizeof(struct Data));
@@ -108,7 +59,7 @@ struct DataCell* addDataCell(struct DataCell* TopDataCell, char *name, char* sur
 	strcpy(New->Contact->name, name);
 	strcpy(New->Contact->surname, surname);
 	New->Contact->phoneNumber = phoneNumber;
-	New->Contact->category = category;
+	strcpy(New->Contact->category, category);
 
 	return New;
 }
@@ -121,4 +72,30 @@ void resetString(char* string)
 		string[i] = '\0';
 		i++;
 	}
+}
+
+void printList(struct DataCell* Source)
+{
+	while (Source->previous!=NULL)
+	{
+		printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+		Source = Source->previous;
+	}
+}
+
+struct DataCell* inverseStack(struct DataCell* Top)
+{
+	struct DataCell* TempStack;//tymczasowy stos
+	TempStack = (struct DataCell*)malloc(sizeof(struct DataCell));
+
+	TempStack->previous = NULL;
+
+
+	while (Top->previous != NULL)
+	{
+		
+	}
+
+	free(Top);
+	return TempStack;
 }
