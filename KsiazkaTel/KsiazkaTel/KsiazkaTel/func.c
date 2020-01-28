@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "func.h"
 
 
@@ -76,6 +77,7 @@ void resetString(char* string)
 
 void printList(struct DataCell* Source)
 {
+	while (Source->next != NULL) Source = Source->next;//przewija do pocz¹tku
 	while (Source->previous!=NULL)
 	{
 		printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
@@ -85,17 +87,47 @@ void printList(struct DataCell* Source)
 
 struct DataCell* inverseStack(struct DataCell* Top)
 {
-	struct DataCell* TempStack;//tymczasowy stos
-	TempStack = (struct DataCell*)malloc(sizeof(struct DataCell));
+	struct DataCell* NewStack;
 
-	TempStack->previous = NULL;
-
-
-	while (Top->previous != NULL)
+	NewStack = Top;
+	while (Top->previous!=NULL)
 	{
-		
+		NewStack->next = Top->previous;
+
+	}
+	
+	return NewStack;
+}
+
+struct DataCell* moveDown(struct DataCell* Source)
+{
+
+	if (Source->previous->previous != NULL)//zabezpieczenie przed przenoszeniem ostatniego
+	{
+
+		if (Source->next != NULL) Source->next->previous = Source->previous;//zabezpieczenie w razie przenoszenia pierwzsego
+		Source->previous->next = Source->next;
+
+		Source->next = Source->previous;
+		Source->previous = Source->next->previous;
+
+		Source->next->previous = Source;
+		Source->previous->next = Source;
+
 	}
 
-	free(Top);
-	return TempStack;
+	return Source;
+}
+
+struct DataCell* sortName(struct DataCell* Source)
+{
+	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+
+	if (0<strcoll(Source->Contact->name,Source->next->Contact->name))
+	{
+
+	}
+
+
+	return Source;
 }

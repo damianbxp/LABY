@@ -28,4 +28,9 @@ void resetString(char*);
 void printList(struct DataCell*);
 
 struct DataCell* inverseStack(struct DataCell*);
+
+struct DataCell* moveDown(struct DataCell*);
+
+struct DataCell* sortName(struct DataCell*);
+
 #endif // !_F
