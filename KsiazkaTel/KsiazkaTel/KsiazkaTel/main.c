@@ -34,13 +34,14 @@ int main()
 	Top = loadFromCsv(Top);
 	ActiveCell = Top;
 
+	int currentSort = 0;//1-imine  2-nazwisko  3-grupa
 	int menuV = -1;
 
 	while (menuV!=48)
 	{
 		system("cls");
 		printList(ActiveCell);
-		printf("1.Sortuj imiennie\n2.Sortuj nazwiskami\n3.Sortuj kategori¹\n4.Wyszukaj\n5.Wyszukaj po grupie6.Dodaj kontakt\n7.Usuñ kontakt\n0.EXIT");
+		printf("1.Sortuj imiennie\n2.Sortuj nazwiskami\n3.Sortuj kategori¹\n4.Wyszukaj\n5.Wyszukaj po grupie\n6.Dodaj kontakt\n7.Usuñ kontakt\n0.EXIT");
 		menuV = getch();
 
 		switch (menuV)
@@ -48,16 +49,19 @@ int main()
 		case 49:
 		{
 			sortName(ActiveCell);
+			currentSort = 1;
 			break;
 		}
 		case 50:
 		{
 			sortSurname(ActiveCell);
+			currentSort = 2;
 			break;
 		}
 		case 51:
 		{
 			sortCategory(ActiveCell);
+			currentSort = 3;
 			break;
 		}
 		case 52:
@@ -72,12 +76,33 @@ int main()
 		}
 		case 54:
 		{
+			addContact(ActiveCell,currentSort);
 
+			switch (currentSort)
+			{
+			case 1:
+			{
+				sortName(ActiveCell);
+				break;
+			}
+			case 2:
+			{
+				sortSurname(ActiveCell);
+				break;
+			}
+			case 3:
+			{
+				sortCategory(ActiveCell);
+				break;
+			}
+			default:
+				break;
+			}
 			break;
 		}
 		case 55:
 		{
-
+			deleteContact(ActiveCell);
 			break;
 		}
 		default:

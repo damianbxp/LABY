@@ -77,7 +77,7 @@ void resetString(char* string)
 
 void printList(struct DataCell* Source)
 {
-	printf("%10s %10s %10s %10s\n\n","Imiê","Nazwisko","Nr Tel","Kategoria");
+	printf("%10s %10s %10s %10s\n\n","Imiê","Nazwisko","Nr Tel","Grupa");
 	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
 	while (Source->next!=NULL)
 	{
@@ -85,20 +85,6 @@ void printList(struct DataCell* Source)
 		Source = Source->next;
 	}
 	printf("\n\n");
-}
-
-struct DataCell* inverseStack(struct DataCell* Top)
-{
-	struct DataCell* NewStack;
-
-	NewStack = Top;
-	while (Top->previous!=NULL)
-	{
-		NewStack->next = Top->previous;
-
-	}
-	
-	return NewStack;
 }
 
 struct DataCell* moveDown(struct DataCell* Source)
@@ -191,7 +177,7 @@ void search(struct DataCell* Source)
 	char surnameForSearch[30] = "\0";
 	char temp = '\0';
 
-	while (temp!='.')//pêtla do wpisywania
+	while (temp!='`')//pêtla do wpisywania
 	{
 		system("cls");
 		printf("Wyniki wyszukiwania:\n%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
@@ -206,19 +192,19 @@ void search(struct DataCell* Source)
 			}
 			Source = Source->next;
 		}
-		printf("\nwciœcij '.' aby wyjœæ\n");
+		printf("\nwciœcij '`' aby wyjœæ\n");
 		printf("szukaj: %s", searchTab);
 		temp = getch();
 		
 		for (int i = 0;i<20; i++)
 		{
-			if (searchTab[i] == '\0')
+			if (searchTab[i] == '\0')//przechodzi na koniec stringa
 			{
-				if (temp!='\b')
+				if (temp!='\b')//czy ma usun¹æ
 				{
 					searchTab[i] = temp;
 				}
-				else
+				else// tak, ma usun¹æ
 				{
 					if(i!=0) searchTab[i - 1] = '\0';
 				}
@@ -235,7 +221,7 @@ void searchCategory(struct DataCell* Source)
 	char categoryForSearch[30] = "\0";
 	char temp = '\0';
 
-	while (temp != '.')//pêtla do wpisywania
+	while (temp != '`')//pêtla do wpisywania
 	{
 		system("cls");
 		printf("Wyniki wyszukiwania:\n%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
@@ -249,7 +235,7 @@ void searchCategory(struct DataCell* Source)
 			}
 			Source = Source->next;
 		}
-		printf("\nwciœcij '.' aby wyjœæ\n");
+		printf("\nwciœcij '`' aby wyjœæ\n");
 		printf("szukaj: %s", searchTab);
 		temp = getch();
 
@@ -270,4 +256,145 @@ void searchCategory(struct DataCell* Source)
 			}
 		}
 	}
+}
+
+void addContact(struct DataCell* Source)
+{
+	char temp = '\0';
+	char inputTab[30] = "\0";
+	char name[30];
+	char surname[30];
+	int phoneNumber = 0;
+	char category[30];
+
+	for (int i = 1; i <= 4; i++)//iteracje 0.-imie 1.- nazwisko 2.-numer 3.-grupa
+	{
+		temp = '\0';
+		while (temp != '\t')//tabem przechodzi siê do nastêpngo inputu
+		{
+			system("cls");
+			printf("%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Grupa");
+			
+			switch (i)
+			{
+			case 1:
+			{
+				printf("%10s",inputTab);
+				break;
+			}
+			case 2:
+			{
+				printf("%10s %10s",name,inputTab);
+				break;
+			}
+			case 3:
+			{
+				printf("%10s %10s %10s",name,surname,inputTab);
+				break;
+			}
+			case 4:
+			{
+				printf("%10s %10s %10d %10s",name,surname,phoneNumber,inputTab);
+				break;
+			}
+			default:
+				break;
+			}
+
+			temp = getch();
+
+			//tworzenie stringa
+			for (int i = 0; i < 20; i++)
+			{
+				if (inputTab[i] == '\0')
+				{
+					if (temp != '\b' && temp!='\t')
+					{
+						inputTab[i] = temp;
+					}
+					else if (temp =='\b')
+					{
+						if (i != 0) inputTab[i - 1] = '\0';
+					}
+
+					break;
+				}
+			}
+
+		}
+
+
+		switch (i)
+		{
+		case 1:
+		{
+			strcpy(name, inputTab);
+			break;
+		}
+		case 2:
+		{
+			strcpy(surname, inputTab);
+			break;
+		}
+		case 3:
+		{
+			phoneNumber = atoi(inputTab);
+			break;
+		}
+		case 4:
+		{
+			strcpy(category, inputTab);
+			break;
+		}
+		default:
+			break;
+		}
+		resetString(inputTab);
+	}
+
+	Source = addDataCell(Source, name, surname, phoneNumber, category);
+
+	
+}
+
+struct DataCell* deleteContact(struct DataCell* Source)
+{
+	char input = '\0';
+	struct DataCell* HoveredCell;
+	HoveredCell = Source;
+	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+
+	while (input!='`')
+	{
+		system("cls");
+		printf("%10s %10s %10s %10s\n", "Imiê", "Nazwisko", "Nr Tel", "Grupa");
+		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+		while (Source->next != NULL)
+		{
+			printf("\n%10s %10s %10d %10s", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+			if (HoveredCell == Source)printf(" <---");
+			Source = Source->next;
+		}
+		
+		input = getch();
+		if (input=='w')//poruszanie sie po liœci w s
+		{
+			if(HoveredCell->previous!=NULL) HoveredCell = HoveredCell->previous;
+		}
+		else if (input == 's')
+		{
+			if(HoveredCell->next->next!=NULL) HoveredCell = HoveredCell->next;
+		}
+	}
+	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+
+	if (HoveredCell->previous != NULL) HoveredCell->previous->next = HoveredCell->next;
+	else Source = HoveredCell->next;
+	if(HoveredCell->next!=NULL) HoveredCell->next->previous = HoveredCell->previous;
+
+
+	//free(HoveredCell->Contact);
+	//free(HoveredCell);
+	
+	return Source;
 }
