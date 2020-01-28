@@ -31,6 +31,15 @@ struct DataCell* inverseStack(struct DataCell*);
 
 struct DataCell* moveDown(struct DataCell*);
 
-struct DataCell* sortName(struct DataCell*);
+void sortName(struct DataCell*);
+
+void sortSurname(struct DataCell*);
+
+void sortCategory(struct DataCell*);
+
+void search(struct DataCell*);
+
+void searchCategory(struct DataCell*);
+
 
 #endif // !_F

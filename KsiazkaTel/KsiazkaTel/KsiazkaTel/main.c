@@ -29,16 +29,63 @@ int main()
 
 	struct DataCell* ActiveCell;
 
+
+
 	Top = loadFromCsv(Top);
-	printList(Top);
+	ActiveCell = Top;
+
+	int menuV = -1;
+
+	while (menuV!=48)
+	{
+		system("cls");
+		printList(ActiveCell);
+		printf("1.Sortuj imiennie\n2.Sortuj nazwiskami\n3.Sortuj kategori¹\n4.Wyszukaj\n5.Wyszukaj po grupie6.Dodaj kontakt\n7.Usuñ kontakt\n0.EXIT");
+		menuV = getch();
+
+		switch (menuV)
+		{
+		case 49:
+		{
+			sortName(ActiveCell);
+			break;
+		}
+		case 50:
+		{
+			sortSurname(ActiveCell);
+			break;
+		}
+		case 51:
+		{
+			sortCategory(ActiveCell);
+			break;
+		}
+		case 52:
+		{
+			search(ActiveCell);
+			break;
+		}
+		case 53:
+		{
+			searchCategory(ActiveCell);
+			break;
+		}
+		case 54:
+		{
+
+			break;
+		}
+		case 55:
+		{
+
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+
 	//system("pause");
-	printf("\n\n");
-
-	ActiveCell = Top->previous->previous;
-	ActiveCell = moveDown(ActiveCell);
-
-	printList(Top);
-	//inverseStack(Top);
-
 	return 0;
 }

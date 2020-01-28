@@ -45,10 +45,10 @@ struct DataCell* addDataCell(struct DataCell* TopDataCell, char *name, char* sur
 		exit(-1);
 	}
 
-	TopDataCell->next = New;
+	TopDataCell->previous = New;
 
-	New->previous = TopDataCell;
-	New->next = NULL;
+	New->next = TopDataCell;
+	New->previous = NULL;
 	New->Contact= (struct Data*)malloc(sizeof(struct Data));
 	if (New->Contact == NULL)
 	{
@@ -77,12 +77,14 @@ void resetString(char* string)
 
 void printList(struct DataCell* Source)
 {
-	while (Source->next != NULL) Source = Source->next;//przewija do pocz¹tku
-	while (Source->previous!=NULL)
+	printf("%10s %10s %10s %10s\n\n","Imiê","Nazwisko","Nr Tel","Kategoria");
+	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+	while (Source->next!=NULL)
 	{
 		printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
-		Source = Source->previous;
+		Source = Source->next;
 	}
+	printf("\n\n");
 }
 
 struct DataCell* inverseStack(struct DataCell* Top)
@@ -102,32 +104,170 @@ struct DataCell* inverseStack(struct DataCell* Top)
 struct DataCell* moveDown(struct DataCell* Source)
 {
 
-	if (Source->previous->previous != NULL)//zabezpieczenie przed przenoszeniem ostatniego
+	if (Source->next->next != NULL)//zabezpieczenie przed przenoszeniem ostatniego
 	{
 
-		if (Source->next != NULL) Source->next->previous = Source->previous;//zabezpieczenie w razie przenoszenia pierwzsego
-		Source->previous->next = Source->next;
+		if (Source->previous != NULL) Source->previous->next = Source->next;//zabezpieczenie w razie przenoszenia pierwzsego
+		Source->next->previous = Source->previous;
 
-		Source->next = Source->previous;
-		Source->previous = Source->next->previous;
+		Source->previous = Source->next;
+		Source->next = Source->previous->next;
 
-		Source->next->previous = Source;
 		Source->previous->next = Source;
+		Source->next->previous = Source;
 
 	}
 
 	return Source;
 }
 
-struct DataCell* sortName(struct DataCell* Source)
+void sortName(struct DataCell* Source)
 {
-	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+	int isDone = 1;
+	
 
-	if (0<strcoll(Source->Contact->name,Source->next->Contact->name))
+	while (isDone>0)
 	{
-
+		isDone = 0;
+		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+		while (Source->next->next != NULL)//pêtla to pojedyñczego przejœcia
+		{
+			if (0 < strcoll(Source->Contact->name, Source->next->Contact->name))
+			{
+				Source = moveDown(Source);
+				isDone++;
+			}
+			else Source = Source->next;
+		}
 	}
+}
+
+void sortSurname(struct DataCell* Source)
+{
+	int isDone = 1;
 
 
-	return Source;
+	while (isDone > 0)
+	{
+		isDone = 0;
+		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+		while (Source->next->next != NULL)//pêtla to pojedyñczego przejœcia
+		{
+			if (0 < strcoll(Source->Contact->surname, Source->next->Contact->surname))
+			{
+				Source = moveDown(Source);
+				isDone++;
+			}
+			else Source = Source->next;
+		}
+	}
+}
+
+void sortCategory(struct DataCell* Source)
+{
+	int isDone = 1;
+
+
+	while (isDone > 0)
+	{
+		isDone = 0;
+		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+		while (Source->next->next != NULL)//pêtla to pojedyñczego przejœcia
+		{
+			if (0 < strcoll(Source->Contact->category, Source->next->Contact->category))
+			{
+				Source = moveDown(Source);
+				isDone++;
+			}
+			else Source = Source->next;
+		}
+	}
+}
+
+void search(struct DataCell* Source)
+{
+	char searchTab[21]="\0";
+	char nameForSearch[30] = "\0";
+	char surnameForSearch[30] = "\0";
+	char temp = '\0';
+
+	while (temp!='.')//pêtla do wpisywania
+	{
+		system("cls");
+		printf("Wyniki wyszukiwania:\n%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
+		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+		while (Source->next != NULL)
+		{
+			strcpy(nameForSearch, Source->Contact->name);
+			strcpy(surnameForSearch, Source->Contact->surname);
+			if (strstr(_strlwr(nameForSearch), _strlwr(searchTab)) != NULL || strstr(_strlwr(surnameForSearch), _strlwr(searchTab)) != NULL)
+			{
+				printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+			}
+			Source = Source->next;
+		}
+		printf("\nwciœcij '.' aby wyjœæ\n");
+		printf("szukaj: %s", searchTab);
+		temp = getch();
+		
+		for (int i = 0;i<20; i++)
+		{
+			if (searchTab[i] == '\0')
+			{
+				if (temp!='\b')
+				{
+					searchTab[i] = temp;
+				}
+				else
+				{
+					if(i!=0) searchTab[i - 1] = '\0';
+				}
+				
+				break;
+			}
+		}
+	}
+}
+
+void searchCategory(struct DataCell* Source)
+{
+	char searchTab[21] = "\0";
+	char categoryForSearch[30] = "\0";
+	char temp = '\0';
+
+	while (temp != '.')//pêtla do wpisywania
+	{
+		system("cls");
+		printf("Wyniki wyszukiwania:\n%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
+		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
+		while (Source->next != NULL)
+		{
+			strcpy(categoryForSearch, Source->Contact->category);
+			if (strstr(_strlwr(categoryForSearch), _strlwr(searchTab)) != NULL)
+			{
+				printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+			}
+			Source = Source->next;
+		}
+		printf("\nwciœcij '.' aby wyjœæ\n");
+		printf("szukaj: %s", searchTab);
+		temp = getch();
+
+		for (int i = 0; i < 20; i++)
+		{
+			if (searchTab[i] == '\0')
+			{
+				if (temp != '\b')
+				{
+					searchTab[i] = temp;
+				}
+				else
+				{
+					if (i != 0) searchTab[i - 1] = '\0';
+				}
+
+				break;
+			}
+		}
+	}
 }
