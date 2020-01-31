@@ -14,7 +14,7 @@ struct DataCell* loadFromCsv(struct DataCell* TopDataCell)
 	char tempRow[100] = "\0";
 	char tempPhoneNumber[20] = "\0";
 	char tempCategory[20] = "\0";
-	FILE* fp = fopen("phoneBook.csv", "r");
+	FILE* fp = fopen("phoneBook2.csv", "r");
 	while (fgets(tempRow, 100, fp) != NULL)
 	{
 		resetString(tempCategory);
@@ -77,11 +77,11 @@ void resetString(char* string)
 
 void printList(struct DataCell* Source)
 {
-	printf("%10s %10s %10s %10s\n\n","Imiê","Nazwisko","Nr Tel","Grupa");
+	printf("%25s %25s %25s %25s\n\n","Imiê","Nazwisko","Nr Tel","Grupa");
 	while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
 	while (Source->next!=NULL)
 	{
-		printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+		printf("%25s %25s %25d %25s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
 		Source = Source->next;
 	}
 	printf("\n\n");
@@ -180,7 +180,7 @@ void search(struct DataCell* Source)
 	while (temp!='`')//pêtla do wpisywania
 	{
 		system("cls");
-		printf("Wyniki wyszukiwania:\n%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
+		printf("Wyniki wyszukiwania:\n%25s %25s %25s %25s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
 		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
 		while (Source->next != NULL)
 		{
@@ -188,7 +188,7 @@ void search(struct DataCell* Source)
 			strcpy(surnameForSearch, Source->Contact->surname);
 			if (strstr(_strlwr(nameForSearch), _strlwr(searchTab)) != NULL || strstr(_strlwr(surnameForSearch), _strlwr(searchTab)) != NULL)
 			{
-				printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+				printf("%25s %25s %25d %25s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
 			}
 			Source = Source->next;
 		}
@@ -224,14 +224,14 @@ void searchCategory(struct DataCell* Source)
 	while (temp != '`')//pêtla do wpisywania
 	{
 		system("cls");
-		printf("Wyniki wyszukiwania:\n%10s %10s %10s %10s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
+		printf("Wyniki wyszukiwania:\n%25s %25s %25s %25s\n\n", "Imiê", "Nazwisko", "Nr Tel", "Kategoria");
 		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
 		while (Source->next != NULL)
 		{
 			strcpy(categoryForSearch, Source->Contact->category);
 			if (strstr(_strlwr(categoryForSearch), _strlwr(searchTab)) != NULL)
 			{
-				printf("%10s %10s %10d %10s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+				printf("%25s %25s %25d %25s\n", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
 			}
 			Source = Source->next;
 		}
@@ -367,11 +367,11 @@ struct DataCell* deleteContact(struct DataCell* Source)
 	while (input!='`')
 	{
 		system("cls");
-		printf("%10s %10s %10s %10s\n", "Imiê", "Nazwisko", "Nr Tel", "Grupa");
+		printf("%25s %25s %25s %25s\n", "Imiê", "Nazwisko", "Nr Tel", "Grupa");
 		while (Source->previous != NULL) Source = Source->previous;//przewija do pocz¹tku
 		while (Source->next != NULL)
 		{
-			printf("\n%10s %10s %10d %10s", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
+			printf("\n%25s %25s %25s %25s", Source->Contact->name, Source->Contact->surname, Source->Contact->phoneNumber, Source->Contact->category);
 			if (HoveredCell == Source)printf(" <---");
 			Source = Source->next;
 		}
